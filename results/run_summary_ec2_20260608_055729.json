@@ -1,0 +1,63 @@
+{
+  "run_id": "ec2_20260608_055729",
+  "host": "ip-172-23-213-237.ec2.internal",
+  "python": "/home/ec2-user/anaconda3/envs/Braket/bin/python",
+  "max_workers": 2,
+  "total_tasks": 128,
+  "shots_per_replica": 100000,
+  "sweep_start_utc": "2026-06-08T05:57:29.730641+00:00",
+  "sweep_end_utc": "2026-06-08T06:02:22.542629+00:00",
+  "wall_clock_total_sec": 292.8119044289924,
+  "sum_replica_elapsed_sec": 452.5904676914215,
+  "sum_subprocess_wall_sec": 585.0838358033216,
+  "aggregate_elapsed_sec": 0.09727287909481674,
+  "csv_path": "/home/ec2-user/SageMaker/Project/Surface code/surface_code/threshold_summary_ec2_20260608_055729.csv",
+  "distance_timing_path": "/home/ec2-user/SageMaker/Project/Surface code/surface_code/distance_timing_ec2_20260608_055729.csv",
+  "timing_by_distance": [
+    {
+      "distance": 3,
+      "tasks": 32,
+      "shots": 3200000,
+      "logical_errors": 139119,
+      "sum_replica_elapsed_sec": 4.445345640182495,
+      "mean_replica_elapsed_sec": 0.13891705125570297,
+      "min_replica_elapsed_sec": 0.051405906677246094,
+      "max_replica_elapsed_sec": 0.3860640525817871,
+      "sum_subprocess_wall_sec": 35.741924784029834
+    },
+    {
+      "distance": 5,
+      "tasks": 32,
+      "shots": 3200000,
+      "logical_errors": 214857,
+      "sum_replica_elapsed_sec": 33.29898118972778,
+      "mean_replica_elapsed_sec": 1.0405931621789932,
+      "min_replica_elapsed_sec": 0.239088773727417,
+      "max_replica_elapsed_sec": 2.671009063720703,
+      "sum_subprocess_wall_sec": 65.7761755248066
+    },
+    {
+      "distance": 7,
+      "tasks": 32,
+      "shots": 3200000,
+      "logical_errors": 276109,
+      "sum_replica_elapsed_sec": 116.78631496429443,
+      "mean_replica_elapsed_sec": 3.649572342634201,
+      "min_replica_elapsed_sec": 0.7907638549804688,
+      "max_replica_elapsed_sec": 10.269168853759766,
+      "sum_subprocess_wall_sec": 146.4816954046255
+    },
+    {
+      "distance": 9,
+      "tasks": 32,
+      "shots": 3200000,
+      "logical_errors": 323699,
+      "sum_replica_elapsed_sec": 298.0598258972168,
+      "mean_replica_elapsed_sec": 9.314369559288025,
+      "min_replica_elapsed_sec": 1.9837980270385742,
+      "max_replica_elapsed_sec": 26.866914749145508,
+      "sum_subprocess_wall_sec": 337.0840400898596
+    }
+  ],
+  "result_file_count": 128
+}
