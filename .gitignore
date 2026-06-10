@@ -1,0 +1,16 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+default.jupyterlab-workspace
+
+# Local credentials and machine-specific secrets.
+private/
+*.pem
+
+# Local packaging/archive artifacts.
+*.tar
+
+# Runtime logs and scratch outputs.
+logs/
+*.log

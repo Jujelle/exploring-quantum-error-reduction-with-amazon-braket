@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: tbd
+
+Parameters:
+  JobDefResourceMemory:
+    Type: String
+    Default: '1024'
+  JobDefResourceVCPU:
+    Type: String
+    Default: '4'
+  MinVCPUs:
+    Type: Number
+    Default: 0
+
+Resources:
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub amazon-braket-batch-project-${AWS::AccountId}-${AWS::Region}
+
+  BatchImageRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: amazon-braket-batch-project-batch
+
+  LambdaImageRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: amazon-braket-batch-project-lambda
+
+  BatchComputeEnvironment:
+    Type: AWS::Batch::ComputeEnvironment
+    Properties:
+      ComputeResources:
+        AllocationStrategy: BEST_FIT_PROGRESSIVE
+        UpdateToLatestImageVersion: true
+        MaxvCpus: 800 # WS account limit: 256
+        MinvCpus: !Ref MinVCPUs
+        SecurityGroupIds:
+          - !ImportValue BatchDefaultSecurityGroupId
+        Type: EC2
+        Subnets:
+          - !ImportValue BatchPrivateSubnetId
+        InstanceRole: !ImportValue BatchInstanceProfileArn
+        InstanceTypes:
+          - optimal
+      ReplaceComputeEnvironment: true
+      ServiceRole: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/batch.amazonaws.com/AWSServiceRoleForBatch
+      State: ENABLED
+      Type: MANAGED
+
+  BatchJobQueue:
+    Type: AWS::Batch::JobQueue
+    Properties:
+      ComputeEnvironmentOrder:
+        - ComputeEnvironment: !Ref BatchComputeEnvironment
+          Order: 1
+      Priority: 1
+      State: ENABLED
+
+  BatchJobDefinition:
+    Type: AWS::Batch::JobDefinition
+    Properties:
+      Type: container
+      Parameters:
+       entry_point: None
+       delta_tau: None
+       time_steps: None
+       input_file_key: None
+      ContainerProperties:
+        Image: !Sub ${BatchImageRepository.RepositoryUri}:latest
+        Command:
+          - "python"
+          - "container_script.py"
+          - "Ref::entry_point"
+          - "Ref::delta_tau"
+          - "Ref::time_steps"
+          - "Ref::input_file_key"
+        ResourceRequirements:
+          - Type: MEMORY
+            Value: !Ref JobDefResourceMemory
+          - Type: VCPU
+            Value: !Ref JobDefResourceVCPU
+        Environment:
+          - Name: JOB_S3_BUCKET_NAME
+            Value: !Ref DataBucket
+          - Name: JOB_OUTPUT_FILE_NAME
+            Value: results.json
+
+Outputs:
+  DataBucketName:
+    Value: !Ref DataBucket
+  BatchImageRepositoryUri:
+    Value: !GetAtt BatchImageRepository.RepositoryUri
+  LambdaImageRepositoryUri:
+    Value: !GetAtt LambdaImageRepository.RepositoryUri
+  JobQueue:
+    Value: !Ref BatchJobQueue
+  JobDefinition:
+    Value: !Ref BatchJobDefinition

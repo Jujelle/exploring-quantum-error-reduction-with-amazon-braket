@@ -1,0 +1,43 @@
+# Exploring Quantum Error Reduction with Amazon Braket
+
+This repository contains a four-notebook laboratory sequence for exploring quantum error reduction with Amazon Braket and AWS. The notebooks are designed to be read together: Notebook 1 builds the cloud and Braket workflow that supports the experiments, and Notebooks 2-4 study three sequential steps to handle quantum noise: suppression, mitigation, and correction.
+
+Classical computers store information in bits, which take values 0 or 1. Quantum computers use qubits, which can exist in superpositions of `|0>` and `|1>`. Quantum gates transform these states, and sequences of gates form quantum circuits. With entangling gates, multi-qubit circuits can create correlations that have no direct classical analogue.
+
+The difficulty is that quantum states are fragile. Unwanted interactions with the environment cause decoherence; gates are imperfect; measurements can introduce errors; and small errors accumulate as circuits become deeper or wider. Managing noise is therefore one of the central engineering challenges of quantum computing.
+
+This project explores three major responses to that challenge:
+
+- **Error suppression:** reduce noise at the hardware-control level, for example with dynamical decoupling.
+- **Error mitigation:** use classical post-processing to infer better answers from noisy circuit outputs.
+- **Error correction:** encode one logical qubit into many physical qubits so errors can be detected and corrected.
+
+
+## Project Layout
+
+- `figures/` - static and notebook-generated figure files used by the notebooks.
+- `inputs/` - required input/configuration files, currently AWS CloudFormation and Batch artifacts.
+- `helper_functions/` - shared Python helpers imported by the notebooks.
+- `tools/` - supporting utilities for circuits, observables, validation, and mitigation.
+- `batch_container_image/` - AWS Batch container scripts and requirements.
+- `results/`, `results_direct/`, `results_pcs/`, `timing_reports/` - placeholders for generated experiment results and timing summaries. Large/generated result files are intentionally not committed.
+- `private/` - local-only credential files. This directory is ignored by Git and should not be pushed.
+- `Surface code/` - exploratory and legacy surface-code experiments retained for reference.
+
+## Project Background
+
+Classical computers store information in bits, which take values 0 or 1. Quantum computers use qubits, which can exist in superpositions of `|0>` and `|1>`. Quantum gates transform these states, and sequences of gates form quantum circuits. With entangling gates, multi-qubit circuits can create correlations that have no direct classical analogue.
+
+The difficulty is that quantum states are fragile. Unwanted interactions with the environment cause decoherence; gates are imperfect; measurements can introduce errors; and small errors accumulate as circuits become deeper or wider. Managing noise is therefore one of the central engineering challenges of quantum computing.
+
+This project explores three major responses to that challenge:
+
+- **Error suppression:** reduce noise at the hardware-control level, for example with dynamical decoupling.
+- **Error mitigation:** use classical post-processing to infer better answers from noisy circuit outputs.
+- **Error correction:** encode one logical qubit into many physical qubits so errors can be detected and corrected.
+
+Amazon Braket provides a useful environment for this sequence because it gives access to simulators, QPUs, and AWS infrastructure for scaling experiments beyond a purely local workflow.
+
+## GitHub Notes
+
+Do not commit `private/hpc-key-pair.pem` or any other AWS credentials. If the infrastructure notebook creates a new key pair, keep it in `private/` and rotate/delete keys before sharing the repository publicly.
